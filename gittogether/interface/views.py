@@ -18,7 +18,7 @@ def mainPage(request):
             redirect(createPage)
     return render(request, "home.html")
 
-def joinPage(request):
+def joinPage(request, id):
     if request.method == "POST":
         phoneNumber = request.POST["phoneNumber"]
         return HttpResponse(str(id) + "yaay")
