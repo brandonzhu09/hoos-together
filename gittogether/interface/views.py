@@ -21,7 +21,7 @@ def mainPage(request):
 def joinPage(request):
     if request.method == "POST":
         phoneNumber = request.POST["phoneNumber"]
-        return HttpResponse(str(id) + "yeay")
+        return HttpResponse(str(id) + "yay")
     if request.method == "GET":
         eventId = request.path
         eventDesc = 3
