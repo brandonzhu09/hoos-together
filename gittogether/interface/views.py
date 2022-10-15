@@ -1,19 +1,32 @@
-from django.shortcuts import render
-from django.http import HttpResponse
+from django.shortcuts import render, redirect
+from interface.models import Event
 import json
-from models import Event
 
 # Create your views here.
 
-
-
 def mainPage(request):
     if request.method == 'POST':
-        json_data = json.loads(request.body.decode("utf-8"))
-        eventID = json_data.get('code')
-        if Event.objects.filter(eventCode=eventID):
-            pass
-        else:
-            
-            
-        
+        if request.POST.get("join"):
+            body = json.loads(request.body.decode('utf-8'))
+            if Event.objects.filter(eventCode=body['code']):
+                pass
+            else:
+                redirect(joinPage)
+        elif request.POST.get("create"):
+            redirect(createPage)
+    return render(request, "home.html")
+
+def joinPage(request):
+    if request.method == "POST":
+        phoneNumber = request.POST["phoneNumber"]
+        eventId = request.path
+        curEvent = Event.objects.get(pk=eventId)
+    if request.method == "GET":
+        eventId = request.path
+        eventDesc = 3
+        eventName = "Hello"
+        return render(request, "joinPage.html", {'eventDesc': eventDesc, 'eventName': eventName})
+
+def createPage(request):
+    return render(request, "createPage.html")
+
