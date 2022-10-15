@@ -1,5 +1,7 @@
-from django import render
-from models import Event
+from django.shortcuts import render
+from interface.models import Event
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse
 
 # Create your views here.
 
@@ -7,16 +9,15 @@ def mainPage(request):
     return 3
 
 
-
-def joinPage(request):
+@csrf_exempt
+def joinPage(request, id):
     if request.method == "POST":
         phoneNumber = request.POST["phoneNumber"]
-        eventId = request.path
-        curEvent = Event.objects.get(pk=eventId)
+        return HttpResponse(str(id) + "yeay")
     if request.method == "GET":
         eventId = request.path
         eventDesc = 3
         eventName = "Hello"
-        return render(request, "templates/joinPage.html", {'eventDesc': eventDesc, 'eventName': eventName})
+        return render(request, "joinPage.html", {'eventDesc': eventDesc, 'eventName': eventName})
 
 
