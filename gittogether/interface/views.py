@@ -1,16 +1,24 @@
-from django.shortcuts import render
-from interface.models import Event
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
+from django.shortcuts import render, redirect
+from interface.models import Event
+import json
 
 # Create your views here.
 
 def mainPage(request):
-    return 3
+    if request.method == 'POST':
+        if request.POST.get("join"):
+            body = json.loads(request.body.decode('utf-8'))
+            if Event.objects.filter(eventCode=body['code']):
+                pass
+            else:
+                redirect(joinPage)
+        elif request.POST.get("create"):
+            redirect(createPage)
+    return render(request, "home.html")
 
-
-@csrf_exempt
-def joinPage(request, id):
+def joinPage(request):
     if request.method == "POST":
         phoneNumber = request.POST["phoneNumber"]
         return HttpResponse(str(id) + "yeay")
@@ -20,4 +28,6 @@ def joinPage(request, id):
         eventName = "Hello"
         return render(request, "joinPage.html", {'eventDesc': eventDesc, 'eventName': eventName})
 
+def createPage(request):
+    return render(request, "createPage.html")
 
