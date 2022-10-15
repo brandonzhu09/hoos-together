@@ -1,21 +1,24 @@
 from django.shortcuts import render, redirect
 from interface.models import Event
 import json
+from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
 
+@csrf_exempt
 def mainPage(request):
     if request.method == 'POST':
         if request.POST.get("join"):
-            body = json.loads(request.body.decode('utf-8'))
-            if Event.objects.filter(eventCode=body['code']):
-                pass
+            ID = request.POST['code']
+            if Event.objects.filter(eventCode=ID):
+                return render(request, "home.html", message='Code already taken, please enter another code!')
             else:
-                redirect(joinPage)
+                return redirect(joinPage)
         elif request.POST.get("create"):
-            redirect(createPage)
+            return redirect('/create/')
     return render(request, "home.html")
 
+@csrf_exempt
 def joinPage(request):
     if request.method == "POST":
         phoneNumber = request.POST["phoneNumber"]

@@ -20,6 +20,6 @@ from interface.views import mainPage, joinPage, createPage
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', mainPage),
-    path('join/path', joinPage),
+    path('join/<int: id', joinPage),
     path('create/', createPage)
 ]
