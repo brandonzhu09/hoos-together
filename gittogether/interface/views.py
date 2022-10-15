@@ -1,3 +1,5 @@
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from interface.models import Event
 import json
@@ -18,12 +20,10 @@ def mainPage(request):
             return redirect('/create/')
     return render(request, "home.html")
 
-@csrf_exempt
-def joinPage(request):
+def joinPage(request, id):
     if request.method == "POST":
         phoneNumber = request.POST["phoneNumber"]
-        eventId = request.path
-        curEvent = Event.objects.get(pk=eventId)
+        return HttpResponse(str(id) + "yaay")
     if request.method == "GET":
         eventId = request.path
         eventDesc = 3
