@@ -36,6 +36,7 @@ def joinPage(request, id):
             return HttpResponse("Schedule time must be between 15 minutes to 7 days.")
         except:
             return HttpResponse("Error has occurred.")
+        return HttpResponse("Successfully joined event!")
     if request.method == "GET":
         if(not Event.objects.filter(pk=id)):
             return HttpResponse("An event with that code does not exist")
