@@ -15,10 +15,7 @@ from pytz import timezone
 def mainPage(request):
     if request.method == 'POST':
         ID = request.POST['code']
-        if request.POST.get("join"):
-            if Event.objects.filter(eventCode=ID):
-                return render(request, "home.html", message='Code already taken, please enter another code!')
-            else:
+        if request.POST.get("join") and Event.objects.filter(pk = ID):
                 return redirect('/join/' + ID)
         elif request.POST.get("create"):
             request.session['login_from'] = request.META.get('HTTP_REFERER', '/')
@@ -31,8 +28,11 @@ def joinPage(request, id):
         phoneNumber = request.POST["phoneNumber"]
         return HttpResponse(str(id) + "yaay")
     if request.method == "GET":
-        eventDesc = 3
-        eventName = "Hello"
+        if(not Event.objects.filter(pk=id)):
+            return HttpResponse("An event with that code does not exist")
+        curEvent = Event.objects.get(pk=id)
+        eventName = curEvent.eventName
+        eventDesc = curEvent.eventDesc
         return render(request, "joinPage.html", {'eventDesc': eventDesc, 'eventName': eventName})
 
 @csrf_exempt
