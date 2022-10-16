@@ -10,6 +10,7 @@
       display: flex;
       justify-content: center;
       height: 100%;
+      background-color: #000080;
       }
       body, div, h1, form, input, p {
       padding: 0;
@@ -19,9 +20,9 @@
       font-size: 16px;
       color: #FF8C00;
       }
-      h1 {
+      h2 {
       padding: 10px 0;
-      font-size: 32px;
+      font-size: 20px;
       font-weight: 300;
       text-align: center;
       }
@@ -37,9 +38,6 @@
       min-height: 340px;
       padding: 10px 0;
       margin: auto;
-      border-radius: 5px;
-      border: solid 1px #ccc;
-      box-shadow: 1px 2px 5px rgba(0,0,0,.31);
       background: #000080;
       }
       form {
@@ -90,8 +88,9 @@
       input[type=radio]:checked + label:after {
       opacity: 1;
       }
-      input[type=text], input[type=password] {
+      input[type=tel], input[type=password] {
       width: calc(100% - 57px);
+      
       height: 36px;
       margin: 13px 0 0 -5px;
       padding-left: 10px;
@@ -133,12 +132,17 @@
 </head>
 <body>
 
-    <h1>{{eventName}}</h1>
-    <h1>{{eventDesc}}</h1>
+    
     <form method="POST">
-        <input type = "tel" name="phoneNumber" placeholder="Phone Number" pattern="[0-9]{3}[0-9]{3}[0-9]{4}" required maxlength="10" placeholder="Enter Phone Number"/>
-        <div class="btn-block">
-            <button type="submit">Submit</button>
+        <div class="main-block">
+            <label id="icon" for="name"><i class="fa fa-phone"></i></label>
+            <input type = "tel" name="phoneNumber" placeholder="Phone Number" pattern="[0-9]{3}[0-9]{3}[0-9]{4}" required maxlength="10" placeholder="Enter Phone Number"/>
+            <div class="btn-block">
+                <button type="submit">Submit</button>
+            </div>
+            <h2>Event Name: {{eventName}}</h2>
+            <h2>Event Description: {{eventDesc}}</h2>
+            <h2>Event Date: {{eventDate}} </h2>
         </div>
     </form>
 </body>

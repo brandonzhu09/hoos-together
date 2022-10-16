@@ -8,7 +8,6 @@ from django.views.decorators.csrf import csrf_exempt
 from random import randrange
 from datetime import datetime, timedelta, timezone, tzinfo
 from pytz import timezone
-from dateutil import parser
 from twilio.rest import Client
 from interface.tokens import getAccountSID, getAuthToken
 
@@ -16,7 +15,9 @@ from interface.tokens import getAccountSID, getAuthToken
 
 @csrf_exempt
 def mainPage(request):
+    
     if request.method == 'POST':
+        print(request.POST)
         ID = request.POST['code']
         if request.POST.get("join") and Event.objects.filter(eventCode = ID):
             return redirect('/join/' + ID)
@@ -41,9 +42,10 @@ def joinPage(request, id):
         curEvent = Event.objects.get(pk=id)
         eventName = curEvent.eventName
         eventDesc = curEvent.eventDesc
+        eventDate = curEvent.eventTime
         print(curEvent.eventTime)
         print(curEvent.eventTime +timedelta(hours=4))
-        return render(request, "joinPage.html", {'eventDesc': eventDesc, 'eventName': eventName})
+        return render(request, "joinPage.html", {'eventDesc': eventDesc, 'eventName': eventName, 'eventDate': eventDate})
 
 @csrf_exempt
 def createPage(request):
