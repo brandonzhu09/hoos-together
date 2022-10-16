@@ -1,3 +1,4 @@
+import pytz
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
@@ -8,9 +9,10 @@ from random import randrange
 from datetime import datetime, timedelta, timezone
 from datetime import tzinfo
 from pytz import timezone
+from dateutil import parser
 from twilio.rest import Client
-from twilio import TwilioRestException
-from tokens import getAccountSID, getAuthToken
+#from twilio import TwilioRestException
+from interface.tokens import getAccountSID, getAuthToken
 
 # Create your views here.
 
@@ -32,8 +34,8 @@ def joinPage(request, id):
         event = Event.objects.get(eventCode=id)
         try:
             schedule_send(phoneNumber, event)
-        except TwilioRestException as e:
-            return HttpResponse("Schedule time must be between 15 minutes to 7 days.")
+        #except TwilioRestException as e:
+        #    return HttpResponse("Schedule time must be between 15 minutes to 7 days.")
         except:
             return HttpResponse("Error has occurred.")
     if request.method == "GET":
@@ -42,6 +44,8 @@ def joinPage(request, id):
         curEvent = Event.objects.get(pk=id)
         eventName = curEvent.eventName
         eventDesc = curEvent.eventDesc
+        print(curEvent.eventTime)
+        print(curEvent.eventTime.astimezone(tz=pytz.UTC))
         return render(request, "joinPage.html", {'eventDesc': eventDesc, 'eventName': eventName})
 
 @csrf_exempt
@@ -73,7 +77,7 @@ def schedule_send(phoneNumber, event):
     message = client.messages.create(
         messaging_service_sid='MGb902be7f3756eed60fe311ab72cc7319',
         body=event.eventName,
-        send_at=event.eventTime,
+        send_at=event.eventTime.astimezone(pytz.UTC),
         schedule_type='fixed',
         to=phoneNumber)
     print(message.sid)
