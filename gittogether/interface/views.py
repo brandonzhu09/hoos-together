@@ -18,10 +18,7 @@ from tokens import getAccountSID, getAuthToken
 def mainPage(request):
     if request.method == 'POST':
         ID = request.POST['code']
-        if request.POST.get("join"):
-            if Event.objects.filter(eventCode=ID):
-                return render(request, "home.html", message='Code already taken, please enter another code!')
-            else:
+        if request.POST.get("join") and Event.objects.filter(pk = ID):
                 return redirect('/join/' + ID)
         elif request.POST.get("create"):
             request.session['login_from'] = request.META.get('HTTP_REFERER', '/')
@@ -40,21 +37,27 @@ def joinPage(request, id):
         except:
             return HttpResponse("Error has occurred.")
     if request.method == "GET":
-        eventDesc = 3
-        eventName = "Hello"
+        if(not Event.objects.filter(pk=id)):
+            return HttpResponse("An event with that code does not exist")
+        curEvent = Event.objects.get(pk=id)
+        eventName = curEvent.eventName
+        eventDesc = curEvent.eventDesc
         return render(request, "joinPage.html", {'eventDesc': eventDesc, 'eventName': eventName})
 
 @csrf_exempt
 def createPage(request):
     eventID=randrange(100000, 999999)
+    print(Event.objects.filter(eventCode=eventID))
+    while Event.objects.filter(eventCode=eventID):
+        eventID=randrange(100000, 999999)
     if request.method == 'POST':
         name = request.POST.get("name")
         desc = request.POST.get("event")
         date = request.POST.get("date")
         dateBetter = datetime.strptime(date, '%Y-%m-%dT%H:%M')
-        eastern = timezone('US/Eastern')
-        dateBetter = dateBetter.replace(tzinfo=eastern)
-        event = Event(eventCode=eventID, eventName=name, eventTime=dateBetter, eventDesc=desc)
+        eastern = timezone("US/Eastern")
+        dateEastern = dateBetter.replace(tzinfo=eastern)
+        event = Event(eventCode=eventID, eventName=name, eventTime=dateEastern, eventDesc=desc)
         event.save()
         return redirect(request.session['login_from'] + 'code/' + str(eventID))
     return render(request, 'createPage.html')
