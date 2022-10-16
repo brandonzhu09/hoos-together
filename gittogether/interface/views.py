@@ -6,12 +6,10 @@ from interface.models import Event
 import json
 from django.views.decorators.csrf import csrf_exempt
 from random import randrange
-from datetime import datetime, timedelta, timezone
-from datetime import tzinfo
+from datetime import datetime, timedelta, timezone, tzinfo
 from pytz import timezone
 from dateutil import parser
 from twilio.rest import Client
-#from twilio import TwilioRestException
 from interface.tokens import getAccountSID, getAuthToken
 
 # Create your views here.
@@ -21,7 +19,7 @@ def mainPage(request):
     if request.method == 'POST':
         ID = request.POST['code']
         if request.POST.get("join") and Event.objects.filter(pk = ID):
-                return redirect('/join/' + ID)
+            return redirect('/join/' + ID)
         elif request.POST.get("create"):
             request.session['login_from'] = request.META.get('HTTP_REFERER', '/')
             return redirect('/create/')
@@ -34,8 +32,6 @@ def joinPage(request, id):
         event = Event.objects.get(eventCode=id)
         try:
             schedule_send(phoneNumber, event)
-        #except TwilioRestException as e:
-        #    return HttpResponse("Schedule time must be between 15 minutes to 7 days.")
         except:
             return HttpResponse("Error has occurred.")
         return HttpResponse("Successfully joined event!")
@@ -46,7 +42,7 @@ def joinPage(request, id):
         eventName = curEvent.eventName
         eventDesc = curEvent.eventDesc
         print(curEvent.eventTime)
-        print(curEvent.eventTime.astimezone(tz=pytz.UTC))
+        print(curEvent.eventTime +timedelta(hours=4))
         return render(request, "joinPage.html", {'eventDesc': eventDesc, 'eventName': eventName})
 
 @csrf_exempt
@@ -60,9 +56,7 @@ def createPage(request):
         desc = request.POST.get("event")
         date = request.POST.get("date")
         dateBetter = datetime.strptime(date, '%Y-%m-%dT%H:%M')
-        eastern = timezone("US/Eastern")
-        dateEastern = dateBetter.replace(tzinfo=eastern)
-        event = Event(eventCode=eventID, eventName=name, eventTime=dateEastern, eventDesc=desc)
+        event = Event(eventCode=eventID, eventName=name, eventTime=dateBetter, eventDesc=desc)
         event.save()
         return redirect(request.session['login_from'] + 'code/' + str(eventID))
     return render(request, 'createPage.html')
@@ -78,7 +72,7 @@ def schedule_send(phoneNumber, event):
     message = client.messages.create(
         messaging_service_sid='MGb902be7f3756eed60fe311ab72cc7319',
         body=event.eventName,
-        send_at=event.eventTime.astimezone(pytz.UTC),
+        send_at= event.eventTime +timedelta(hours=4),
         schedule_type='fixed',
         to=phoneNumber)
     print(message.sid)
