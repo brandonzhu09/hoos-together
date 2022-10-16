@@ -38,14 +38,17 @@ def joinPage(request, id):
 @csrf_exempt
 def createPage(request):
     eventID=randrange(100000, 999999)
+    print(Event.objects.filter(eventCode=eventID))
+    while Event.objects.filter(eventCode=eventID):
+        eventID=randrange(100000, 999999)
     if request.method == 'POST':
         name = request.POST.get("name")
         desc = request.POST.get("event")
         date = request.POST.get("date")
         dateBetter = datetime.strptime(date, '%Y-%m-%dT%H:%M')
-        eastern = timezone('US/Eastern')
-        dateBetter = dateBetter.replace(tzinfo=eastern)
-        event = Event(eventCode=eventID, eventName=name, eventTime=dateBetter, eventDesc=desc)
+        eastern = timezone("US/Eastern")
+        dateEastern = dateBetter.replace(tzinfo=eastern)
+        event = Event(eventCode=eventID, eventName=name, eventTime=dateEastern, eventDesc=desc)
         event.save()
         return redirect(request.session['login_from'] + 'code/' + str(eventID))
     return render(request, 'createPage.html')

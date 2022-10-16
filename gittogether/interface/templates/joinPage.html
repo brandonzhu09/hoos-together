@@ -9,7 +9,7 @@
     <h1>{{eventName}}</h1>
     <h1>{{eventDesc}}</h1>
     <form method="POST">
-        <input type = "text" name="phoneNumber" placeholder="Enter Phone Number"/>
+        <input type = "tel" name="phoneNumber" placeholder="Phone Number" pattern="[0-9]{3}[0-9]{3}[0-9]{4}" required placeholder="Enter Phone Number"/>
         <button type="submit">Submit</button>
     </form>
 </body>
