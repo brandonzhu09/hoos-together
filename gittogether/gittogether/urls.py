@@ -15,11 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from interface.views import mainPage, joinPage, createPage
+from interface.views import mainPage, joinPage, createPage, codePage
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', mainPage),
     path('join/<int:id>', joinPage),
-    path('create/', createPage)
+    path('create/', createPage),
+    path('code/<int:code>', codePage),
 ]

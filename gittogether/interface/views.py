@@ -21,6 +21,7 @@ def mainPage(request):
             else:
                 return redirect('/join/' + ID)
         elif request.POST.get("create"):
+            request.session['login_from'] = request.META.get('HTTP_REFERER', '/')
             return redirect('/create/')
     return render(request, "home.html")
 
@@ -30,13 +31,13 @@ def joinPage(request, id):
         phoneNumber = request.POST["phoneNumber"]
         return HttpResponse(str(id) + "yaay")
     if request.method == "GET":
-        eventId = request.path
         eventDesc = 3
         eventName = "Hello"
         return render(request, "joinPage.html", {'eventDesc': eventDesc, 'eventName': eventName})
 
 @csrf_exempt
 def createPage(request):
+    eventID=randrange(100000, 999999)
     if request.method == 'POST':
         name = request.POST.get("name")
         desc = request.POST.get("event")
@@ -44,9 +45,12 @@ def createPage(request):
         dateBetter = datetime.strptime(date, '%Y-%m-%dT%H:%M')
         eastern = timezone('US/Eastern')
         dateBetter = dateBetter.replace(tzinfo=eastern)
-        event = Event(eventCode=randrange(1000000, 9999999), eventName=name, eventTime=dateBetter, eventDesc=desc)
-       # 2022-10-21T17:49
-        print(event.eventTime)
+        event = Event(eventCode=eventID, eventName=name, eventTime=dateBetter, eventDesc=desc)
         event.save()
-    return render(request, "createPage.html")
+        return redirect(request.session['login_from'] + 'code/' + str(eventID))
+    return render(request, 'createPage.html')
+
+@csrf_exempt
+def codePage(request, code):
+    return render(request, "codePage.html", {'eventID': code})
 
