@@ -20,14 +20,14 @@
       padding: 0;
       margin: 0;
       outline: none;
-      font-family: Times New Roman, Arial, sans-serif;
+      font-family: 'Montserrat';
       font-size: 16px;
       color: #FF8C00;
       }
       h1 {
       padding: 10px 0;
-      font-size: 30px;
-      font-weight: 300;
+      font-size: 40px;
+      font-weight: 900;
       text-align: center;
       }
       p {
@@ -38,11 +38,13 @@
       opacity: 0.3;
       }
       .main-block {
+      position: relative;
+      top: 40%;
       max-width: 700px;
       min-height: 100px;
-      padding: 10px 0;
+      padding: 10px 20px;
       margin: auto;
-      border-radius: 5px;
+      border-radius: 20px;
       border: solid 1px #ccc;
       box-shadow: 1px 2px 5px rgba(0,0,0,.31);
       background: #000080;
@@ -130,7 +132,9 @@
 <body>
     <div class="main-block" style = "text-align: center">
         <h1>Your code is: </h1>
-        <span > {{eventID}} </span>
+        <span style="font-size: 30px"> {{eventID}} </span>
+        <p style="margin-top: 30px;"> Share <a style= "text-decoration: none; color: white" href="localhost:8000/join/{{eventID}}"> this </a> link with your friends!</p>
+        
     </div>
 </body>
 </html>

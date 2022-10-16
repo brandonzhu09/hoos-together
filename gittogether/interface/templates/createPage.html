@@ -24,9 +24,8 @@
       color: #FF8C00;
       }
       h1 {
-      padding: 10px 0;
-      font-size: 30px;
-      font-weight: 600;
+      font-size: 35px;
+      font-weight: 300;
       text-align: center;
       }
       p {
@@ -37,6 +36,8 @@
       opacity: 0.3;
       }
       .main-block {
+      position: relative;
+      top:20%;
       max-width: 600px;
       min-height: 400px;
       padding: 10px 0;
@@ -95,7 +96,7 @@
       opacity: 1;
       }
       input[type=text], input[type=password] {
-      width: calc(100% - 57px);
+      width: 70%;
       height: 36px;
       margin: 13px 0 0 -5px;
       padding-left: 10px;
@@ -104,6 +105,16 @@
       border: solid 1px #cbc9c9;
       box-shadow: 1px 2px 5px rgba(0,0,0,.09);
       background: #fff;
+      }
+      input[type=datetime-local], input[type=password] {
+      width: 70%;
+      height: 36px;
+      margin: 13px 0 0 -5px;
+      padding-left: 10px;
+      border-radius: 5px;
+      color: white;
+      box-shadow: 1px 2px 5px rgba(0,0,0,.09);
+      background: #FF8C00;
       }
       input[type=password] {
       margin-bottom: 15px;
@@ -122,11 +133,12 @@
       }
       input {
       width: 100%;
-      padding: 10px 0;
+      padding: 5px 0;
       margin: 10px auto;
       border-radius: 5px;
       border: none;
       background: #FF8C00;
+      text-align: center;
       font-size: 14px;
       font-weight: 600;
       color: #fff;
@@ -142,7 +154,7 @@
       font-weight: 600;
       color: #fff;
       }
-      button:hover {
+      input[type=submit]:hover {
       background: #26a9e0;
       }
     </style>
@@ -151,11 +163,11 @@
     
         <div class="main-block">
             <form method="POST">
-                <h1> <b>Your First Step to HoosTogether</b> </h1>
+                <h1> Your First Step to <b> HoosTogether</b> </h1>
                 <div class="btn-block">
                     <input type="text" id="name" name="name" placeholder="Event Name">
                     <input type="text" id="event" name="event" placeholder="Event Description">
-                    <input type="datetime-local" id="date" name="date">
+                    <input type="datetime-local" id="date" name="date" required>
                 </div>
                 <div class="btn-block">
                     <input type="submit" name="create" value="Create">
