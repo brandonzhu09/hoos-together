@@ -16,16 +16,21 @@
       body, div, h1, form, input, p {
       padding: 0;
       margin: 0;
+
       outline: none;
       font-family: 'Montserrat';
       font-size: 16px;
       color: #FF8C00;
       }
       h2 {
+      font-family: 'Montserrat';
       padding: 10px 0;
       font-size: 20px;
       font-weight: 300;
       text-align: center;
+      background-color: #444444;
+      border: 2px solid;
+      border-radius: 20px
       }
       p {
       font-size: 12px;
@@ -40,6 +45,8 @@
       max-width: 340px;
       min-height: 340px;
       padding: 10px 0;
+      border: 2px white solid;
+      border-radius: 20px;
       margin: auto;
       background: #000080;
       }
@@ -123,6 +130,8 @@
       margin: 10px auto;
       border-radius: 5px;
       border: none;
+      width: 50%;
+      font-family: 'Montserrat';
       background: #FF8C00;
       font-size: 14px;
       font-weight: 600;
@@ -136,8 +145,9 @@
 <body>
 
     
-    <form method="POST">
+    
         <div class="main-block">
+            <form method="POST">
             <label id="icon" for="name"><i class="fa fa-phone"></i></label>
             <input type = "tel" name="phoneNumber" placeholder="Phone Number" pattern="[0-9]{3}[0-9]{3}[0-9]{4}" required maxlength="10" placeholder="Enter Phone Number"/>
             <div class="btn-block">
@@ -146,7 +156,8 @@
             <h2>Event Name: {{eventName}}</h2>
             <h2>Event Description: {{eventDesc}}</h2>
             <h2>Event Date: {{eventDate}} </h2>
+            </form>
         </div>
-    </form>
+    
 </body>
 </html>
