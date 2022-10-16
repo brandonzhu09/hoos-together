@@ -1,1 +1,1 @@
-# git-together
+# HoosTogether
