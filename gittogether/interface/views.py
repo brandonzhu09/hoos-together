@@ -8,6 +8,9 @@ from random import randrange
 from datetime import datetime, timedelta, timezone
 from datetime import tzinfo
 from pytz import timezone
+from twilio.rest import Client
+from twilio import TwilioRestException
+from tokens import getAccountSID, getAuthToken
 
 # Create your views here.
 
@@ -26,7 +29,13 @@ def mainPage(request):
 def joinPage(request, id):
     if request.method == "POST":
         phoneNumber = request.POST["phoneNumber"]
-        return HttpResponse(str(id) + "yaay")
+        event = Event.objects.get(eventCode=id)
+        try:
+            schedule_send(phoneNumber, event)
+        except TwilioRestException as e:
+            return HttpResponse("Schedule time must be between 15 minutes to 7 days.")
+        except:
+            return HttpResponse("Error has occurred.")
     if request.method == "GET":
         if(not Event.objects.filter(pk=id)):
             return HttpResponse("An event with that code does not exist")
@@ -57,3 +66,14 @@ def createPage(request):
 def codePage(request, code):
     return render(request, "codePage.html", {'eventID': code})
 
+def schedule_send(phoneNumber, event):
+    account_sid = getAccountSID()
+    auth_token = getAuthToken()
+    client = Client(account_sid, auth_token)
+    message = client.messages.create(
+        messaging_service_sid='MGb902be7f3756eed60fe311ab72cc7319',
+        body=event.eventName,
+        send_at=event.eventTime,
+        schedule_type='fixed',
+        to=phoneNumber)
+    print(message.sid)
