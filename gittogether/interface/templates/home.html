@@ -4,28 +4,37 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Git Together</title>
+    <title>HoosTogether</title>
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
     <style>
-      html, body {
+      html {
       display: flex;
       justify-content: center;
       height: 100%;
+      background-image: linear-gradient(to right, blue , orange);
+      
       }
       body, div, h1, form, input, p {
       padding: 0;
       margin: 0;
       outline: none;
-      font-family: Times New Roman, Arial, sans-serif;
+      font-family: 'Montserrat';
       font-size: 16px;
       color: #FF8C00;
+      
       }
       h1 {
       padding: 10px 0;
-      font-size: 32px;
+      font-size: 40px;
       font-weight: 300;
       text-align: center;
+      }
+      h2 {
+        font-size: 30px;
+        text-align: center;
+        margin: 0px;
       }
       p {
       font-size: 12px;
@@ -35,11 +44,14 @@
       opacity: 0.3;
       }
       .main-block {
+      position: relative;
+      top: 25%;
       max-width: 400px;
       min-height: 340px;
       padding: 10px 0;
       margin: auto;
-      border-radius: 5px;
+      border-radius: 20px;
+      align-items: center;
       border: solid 1px #ccc;
       box-shadow: 1px 2px 5px rgba(0,0,0,.31);
       background: #000080;
@@ -95,12 +107,16 @@
       input[type=text], input[type=password] {
       width: calc(100% - 57px);
       height: 36px;
-      margin: 13px 0 0 -5px;
+      margin: 20px 0 0 20px;
       padding-left: 10px;
+      text-align: center;
       border-radius: 5px;
       border: solid 1px #cbc9c9;
       box-shadow: 1px 2px 5px rgba(0,0,0,.09);
       background: #fff;
+      }
+      input[type="text"]::placeholder {
+        text-align: center;
       }
       input[type=password] {
       margin-bottom: 15px;
@@ -115,6 +131,8 @@
       }
       .btn-block {
       margin-top: 10px;
+      margin-left: 70px;
+      width: 50%;
       text-align: center;
       }
       input[type=submit] {
@@ -124,31 +142,29 @@
       border-radius: 5px;
       border: none;
       background: #FF8C00;
-      font-size: 14px;
+      font-size: 20px;
       font-weight: 600;
       color: #fff;
       }
-      button:hover {
+      input[type=submit]:hover {
       background: #26a9e0;
       }
     </style>
 
 </head>
 <body>
-    <form method="POST">
-        <div class="main-block">
-            <h1> GitTogether </h1>
+    <div class="main-block">
+        <form method="POST">
+            <h1> <b>HoosTogether</b> </h1>
+            <input placeholder="Enter Code" type="text" id="code" name="code" maxlength="6"/>
             <div class="btn-block">
-                <input placeholder="Enter Code" type="text" id="code" name="code" maxlength="6"/>
+                <input type="submit" name="join" value="JOIN"/>
             </div>
+            <h2> or </h2>
             <div class="btn-block">
-                <input type="submit" name="join" value="Join"/>
+                <input type="submit" name="create" value="CREATE"/>
             </div>
-            <h1> or </h1>
-            <div class="btn-block">
-                <input type="submit" name="create" value="Create"/>
-            </div>
-        </div>
-    </form>
+        </form>
+    </div>
 </body>
 </html>

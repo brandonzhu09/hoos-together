@@ -7,24 +7,26 @@
     <title>Create your Event!</title>
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
     <style>
-      html, body {
+      html {
       display: flex;
       justify-content: center;
       height: 100%;
+      background-image: linear-gradient(to right, blue , orange);
       }
       body, div, h1, form, input, p {
       padding: 0;
       margin: 0;
       outline: none;
-      font-family: Times New Roman, Arial, sans-serif;
+      font-family: 'Montserrat';
       font-size: 16px;
       color: #FF8C00;
       }
       h1 {
       padding: 10px 0;
       font-size: 30px;
-      font-weight: 300;
+      font-weight: 600;
       text-align: center;
       }
       p {
@@ -115,7 +117,7 @@
       text-align: center;
       }
       .btn-block {
-      margin-top: 10px;
+      margin-top: 20px;
       text-align: center;
       }
       input {
@@ -129,6 +131,17 @@
       font-weight: 600;
       color: #fff;
       }
+      input[type=submit] {
+      width: 30%;
+      padding: 10px 0;
+      margin: 10px auto;
+      border-radius: 5px;
+      border: none;
+      background: #FF8C00;
+      font-size: 20px;
+      font-weight: 600;
+      color: #fff;
+      }
       button:hover {
       background: #26a9e0;
       }
@@ -138,7 +151,7 @@
     
         <div class="main-block">
             <form method="POST">
-                <h1> Your First Step to GitTogether </h1>
+                <h1> <b>Your First Step to HoosTogether</b> </h1>
                 <div class="btn-block">
                     <input type="text" id="name" name="name" placeholder="Event Name">
                     <input type="text" id="event" name="event" placeholder="Event Description">

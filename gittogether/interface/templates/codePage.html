@@ -7,11 +7,14 @@
     <title>Your Code</title>
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
     <style>
-      html, body {
+      html {
       display: flex;
       justify-content: center;
       height: 100%;
+      background-image: linear-gradient(to right, blue , orange);
+      font-family: 'Montserrat'
       }
       body, div, h1, form, input, p {
       padding: 0;
@@ -125,9 +128,9 @@
     </style>
 </head>
 <body>
-    <div class="main-block">
-        <h1>Your Code is: </h1>
-            {{eventID}}
+    <div class="main-block" style = "text-align: center">
+        <h1>Your code is: </h1>
+        <span > {{eventID}} </span>
     </div>
 </body>
 </html>
