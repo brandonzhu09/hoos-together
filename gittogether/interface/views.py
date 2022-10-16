@@ -1,3 +1,4 @@
+import pytz
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
@@ -5,10 +6,10 @@ from interface.models import Event
 import json
 from django.views.decorators.csrf import csrf_exempt
 from random import randrange
-from datetime import datetime, timedelta, timezone
-from datetime import tzinfo
+from datetime import datetime, timedelta, timezone, tzinfo
 from pytz import timezone
-import twilio.rest
+from dateutil import parser
+from twilio.rest import Client
 from interface.tokens import getAccountSID, getAuthToken
 
 # Create your views here.
@@ -40,6 +41,8 @@ def joinPage(request, id):
         curEvent = Event.objects.get(pk=id)
         eventName = curEvent.eventName
         eventDesc = curEvent.eventDesc
+        print(curEvent.eventTime)
+        print(curEvent.eventTime +timedelta(hours=4))
         return render(request, "joinPage.html", {'eventDesc': eventDesc, 'eventName': eventName})
 
 @csrf_exempt
@@ -53,9 +56,7 @@ def createPage(request):
         desc = request.POST.get("event")
         date = request.POST.get("date")
         dateBetter = datetime.strptime(date, '%Y-%m-%dT%H:%M')
-        eastern = timezone("US/Eastern")
-        dateEastern = dateBetter.replace(tzinfo=eastern)
-        event = Event(eventCode=eventID, eventName=name, eventTime=dateEastern, eventDesc=desc)
+        event = Event(eventCode=eventID, eventName=name, eventTime=dateBetter, eventDesc=desc)
         event.save()
         return redirect(request.session['login_from'] + 'code/' + str(eventID))
     return render(request, 'createPage.html')
@@ -71,7 +72,7 @@ def schedule_send(phoneNumber, event):
     message = client.messages.create(
         messaging_service_sid='MGb902be7f3756eed60fe311ab72cc7319',
         body=event.eventName,
-        send_at=event.eventTime,
+        send_at= event.eventTime +timedelta(hours=4),
         schedule_type='fixed',
         to=phoneNumber)
     print(message.sid)
