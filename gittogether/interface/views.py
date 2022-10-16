@@ -8,9 +8,8 @@ from random import randrange
 from datetime import datetime, timedelta, timezone
 from datetime import tzinfo
 from pytz import timezone
-from twilio.rest import Client
-from twilio import TwilioRestException
-from tokens import getAccountSID, getAuthToken
+import twilio.rest
+from interface.tokens import getAccountSID, getAuthToken
 
 # Create your views here.
 
@@ -18,8 +17,8 @@ from tokens import getAccountSID, getAuthToken
 def mainPage(request):
     if request.method == 'POST':
         ID = request.POST['code']
-        if request.POST.get("join") and Event.objects.filter(pk = ID):
-                return redirect('/join/' + ID)
+        if request.POST.get("join") and Event.objects.filter(eventCode = ID):
+            return redirect('/join/' + ID)
         elif request.POST.get("create"):
             request.session['login_from'] = request.META.get('HTTP_REFERER', '/')
             return redirect('/create/')
@@ -32,8 +31,6 @@ def joinPage(request, id):
         event = Event.objects.get(eventCode=id)
         try:
             schedule_send(phoneNumber, event)
-        except TwilioRestException as e:
-            return HttpResponse("Schedule time must be between 15 minutes to 7 days.")
         except:
             return HttpResponse("Error has occurred.")
         return HttpResponse("Successfully joined event!")
