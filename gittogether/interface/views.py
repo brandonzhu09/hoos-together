@@ -19,7 +19,8 @@ def mainPage(request):
     if request.method == 'POST':
         print(request.POST)
         ID = request.POST['code']
-        if request.POST.get("join") and Event.objects.filter(eventCode = ID):
+
+        if request.POST.get("join") and not id=="" and Event.objects.filter(eventCode = ID):
             return redirect('/join/' + ID)
         elif request.POST.get("create"):
             request.session['login_from'] = request.META.get('HTTP_REFERER', '/')
@@ -31,11 +32,15 @@ def joinPage(request, id):
     if request.method == "POST":
         phoneNumber = request.POST["phoneNumber"]
         event = Event.objects.get(eventCode=id)
+        confirm(phoneNumber, event)
         try:
             schedule_send(phoneNumber, event)
         except:
-            return HttpResponse("Error has occurred.")
-        return HttpResponse("Successfully joined event!")
+            return HttpResponse("That event is going to happen in less than 15 minutes")
+        eventName = event.eventName
+        eventDesc = event.eventDesc
+        eventDate = event.eventTime
+        return render(request, "joinPage.html", {'eventDesc': eventDesc, 'eventName': eventName, 'eventDate': eventDate})
     if request.method == "GET":
         if(not Event.objects.filter(pk=id)):
             return HttpResponse("An event with that code does not exist")
@@ -73,8 +78,18 @@ def schedule_send(phoneNumber, event):
     client = Client(account_sid, auth_token)
     message = client.messages.create(
         messaging_service_sid='MGb902be7f3756eed60fe311ab72cc7319',
-        body=event.eventName,
-        send_at= event.eventTime +timedelta(hours=4),
+        body="Reminder: "+event.eventName+  " is about to happen in 15 minutes",
+        send_at= event.eventTime +timedelta(hours=4, minutes=-15),
         schedule_type='fixed',
-        to=phoneNumber)
+        to="+1" + phoneNumber)
+    print(message.sid)
+
+def confirm(phoneNumber, event):
+    account_sid = getAccountSID()
+    auth_token = getAuthToken()
+    client = Client(account_sid, auth_token)
+    message = client.messages.create(
+        messaging_service_sid='MGb902be7f3756eed60fe311ab72cc7319',
+        body="You're confirmed for the " + event.eventName + " at " + event.eventTime.strftime("%I:%M%p on %b %d"),
+        to="+1" + phoneNumber)
     print(message.sid)
